@@ -1,0 +1,18 @@
+GET http://127.0.0.1:8000/api/categoria
+Authorization: Bearer 7|9v8brJ9ywRooIgnMorogy7uMDKSyi7DRamKMZbR6e557d4bc
+
+### guardar categoria
+
+POST http://127.0.0.1:8000/api/categoria
+Authorization: Bearer 7|9v8brJ9ywRooIgnMorogy7uMDKSyi7DRamKMZbR6e557d4bc
+Content-Type: application/json
+
+{
+    "nombre": "MUEBLES",
+    "detalle": "Muebles para oficinas"
+}
+
+### mostrar
+GET http://127.0.0.1:8000/api/categoria/1
+Authorization: Bearer 7|9v8brJ9ywRooIgnMorogy7uMDKSyi7DRamKMZbR6e557d4bc
+
