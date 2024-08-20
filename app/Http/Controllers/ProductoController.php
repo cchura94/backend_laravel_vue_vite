@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Producto;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ProductoController extends Controller
 {
@@ -31,7 +32,28 @@ class ProductoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // validar
+        $request->validate([
+            "nombre" => "required|min:3|max:200",
+            "categoria_id" => "required"
+        ]);
+
+        $producto = Producto::where("nombre", "=", $request->nombre)->first();
+        if(isset($producto)){
+            return response()->json(["message" => "El Producto ya ha sido registrado"], 422);
+        }
+
+        // guardar
+        
+        $producto = new Producto();
+        $producto->nombre = $request->nombre;
+        $producto->precio = $request->precio;
+        $producto->cantidad = $request->cantidad;
+        $producto->descripcion = $request->descripcion;
+        $producto->categoria_id = $request->categoria_id;
+        $producto->save();
+
+        return response()->json(["message" => "producto registrado"], 201);
     }
 
     /**
@@ -39,7 +61,9 @@ class ProductoController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $producto = Producto::findOrFail($id);
+
+        return response()->json($producto, 200);
     }
 
     /**
@@ -47,7 +71,27 @@ class ProductoController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        DB::beginTransaction();
+
+        try {
+            // buscamos
+            $producto = Producto::findOrFail($id);
+    
+            // actualizar
+            $producto->nombre = $request->nombre;
+            $producto->precio = $request->precio;
+            $producto->cantidad = $request->cantidad;
+            $producto->descripcion = $request->descripcion;
+            $producto->categoria_id = $request->categoria_id;
+            $producto->update();
+
+            DB::commit();
+            return response()->json(["message" => "Producto actualizado"], 201);
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json(["message" => "Ocurrió un error al actualizar el producto", "error" => $e->getMessage()], 422);
+
+        }
     }
 
     /**
@@ -55,6 +99,29 @@ class ProductoController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $producto = Producto::findOrFail($id);
+
+        $producto->estado = false;
+        $producto->update();
+        
+        return response()->json(["message" => "Producto Inactivo"], 200);
+
+    }
+
+    function updateImage(Request $request, $id){
+        $producto = Producto::findOrFail($id);
+
+        if($file = $request->file("imagen")){
+           $nombre_imagen = "";
+           $direccion_image = time()."-".$file->getClientOriginalName();
+           $file->move("imagenes/", $direccion_image);
+           
+           $direccion_image = "imagenes/". $direccion_image;
+
+           $producto->imagen = $direccion_image;
+           $producto->update();
+           return response()->json(["message" => "Imagen actualizada"], 200);
+
+        }
     }
 }

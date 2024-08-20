@@ -38,6 +38,9 @@ Route::middleware('auth:sanctum')->group(function(){
 
     Route::post("/usuario/asignar-persona", [UsuarioController::class, "asignarPersona"]);
 
+    // subida de imagen
+    Route::post("producto/{id}/upload-image", [ProductoController::class, "updateImage"]);
+
     // controlador de recursos (API)
     Route::apiResource("usuario", UsuarioController::class);
     Route::apiResource("persona", PersonaController::class);

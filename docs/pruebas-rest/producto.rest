@@ -1,0 +1,27 @@
+### listar
+GET http://127.0.0.1:8000/api/producto
+Accept: application/json
+Authorization: Bearer 8|isTEUCt58XfRi1mbCMbr6Jley9pTPBNjacekMdG9af66e0d5
+
+
+### Guardar producto
+POST http://127.0.0.1:8000/api/producto
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer 8|isTEUCt58XfRi1mbCMbr6Jley9pTPBNjacekMdG9af66e0d5
+
+{
+    "nombre": "Laptop",
+    "precio": 8000,
+    "cantidad": 5,
+    "categoria_id": 1
+}
+
+### mostrar producto
+GET http://127.0.0.1:8000/api/producto/1
+Authorization: Bearer 8|isTEUCt58XfRi1mbCMbr6Jley9pTPBNjacekMdG9af66e0d5
+
+
+### cambiar estado
+DELETE http://127.0.0.1:8000/api/producto/1
+Authorization: Bearer 8|isTEUCt58XfRi1mbCMbr6Jley9pTPBNjacekMdG9af66e0d5
