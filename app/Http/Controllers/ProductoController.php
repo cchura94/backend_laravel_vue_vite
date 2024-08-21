@@ -19,9 +19,10 @@ class ProductoController extends Controller
             $productos= Producto::where('nombre', 'like', "%$request->q%")
                                 ->orWhere('precio', 'like', "%$request->q%")
                                 ->orderBy('id', 'desc')
+                                ->with('categoria')
                                 ->paginate($limit);
         }else{
-            $productos= Producto::orderBy('id', 'desc')->paginate($limit);
+            $productos= Producto::orderBy('id', 'desc')->with('categoria')->paginate($limit);
         }
 
         return response()->json($productos, 200);
