@@ -17,7 +17,7 @@ class PedidoController extends Controller
         // $fi = $request->fecha_inicio;
         // $ff = $request->fecha_fin;
 
-        $pedidos = Pedido::with('productos', 'cliente')->get();
+        $pedidos = Pedido::with('productos', 'cliente')->paginate(10);
 
         return response()->json($pedidos);
     }
@@ -50,14 +50,17 @@ class PedidoController extends Controller
                 $id_prod = $prod['id'];
                 $cant_prod = $prod['cantidad'];
 
-                $pedido->productos()->attach($id_prod, ["cantidad" => $cant_prod]);
+                $pedido->productos()->attach($id_prod, ["cantidad_salida" => $cant_prod]);
             }
 
             DB::commit();
             // all good
+
+            return response()->json(["message" => "Pedido registrado"], 201);
         } catch (\Exception $e) {
             DB::rollback();
             // something went wrong
+            return response()->json(["message" => "error al registrar el pedido", "error" => $e->getMessage()], 422);
         }
     }
 

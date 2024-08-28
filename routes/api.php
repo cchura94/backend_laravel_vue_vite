@@ -36,6 +36,8 @@ Route::get('email/resend', [AuthController::class, "resend"])->name("verificatio
 
 Route::middleware('auth:sanctum')->group(function(){
 
+    Route::get("/cliente/buscar", [ClienteController::class, "funBuscar"]);
+
     Route::post("/usuario/asignar-persona", [UsuarioController::class, "asignarPersona"]);
 
     // subida de imagen
