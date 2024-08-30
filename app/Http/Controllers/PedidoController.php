@@ -6,6 +6,7 @@ use App\Models\Pedido;
 use App\Models\Producto;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class PedidoController extends Controller
 {
@@ -62,6 +63,14 @@ class PedidoController extends Controller
             // something went wrong
             return response()->json(["message" => "error al registrar el pedido", "error" => $e->getMessage()], 422);
         }
+    }
+
+    function reportePedidoPDF($id){
+
+        $pedido = Pedido::with(['cliente', 'productos'])->find($id);
+
+        $pdf = Pdf::loadView('pdf.recibo', ["pedido" => $pedido]);
+        return $pdf->download('recibo.pdf');
     }
 
     /**

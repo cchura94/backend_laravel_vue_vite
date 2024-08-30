@@ -34,8 +34,12 @@ Route::post('change-password', [ResetPasswordController::class, "changePassword"
 Route::get('email/verify/{id}', [AuthController::class, 'verify'])->name('verification.verify');
 Route::get('email/resend', [AuthController::class, "resend"])->name("verification.resend")->middleware('auth:sanctum');
 
-Route::middleware('auth:sanctum')->group(function(){
 
+Route::middleware('auth:sanctum')->group(function(){
+    
+    Route::get("producto/excel", [ProductoController::class, "exportarExcel"]);
+    Route::get("pedido/{id}/reporte-pdf", [PedidoController::class, "reportePedidoPDF"]);
+    
     Route::get("/cliente/buscar", [ClienteController::class, "funBuscar"]);
 
     Route::post("/usuario/asignar-persona", [UsuarioController::class, "asignarPersona"]);

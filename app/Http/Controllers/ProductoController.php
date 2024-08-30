@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\ProductoExport;
 use App\Models\Producto;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
+
 
 class ProductoController extends Controller
 {
@@ -125,4 +128,8 @@ class ProductoController extends Controller
 
         }
     }
+
+    public function exportarExcel(){
+        return Excel::download(new ProductoExport, 'producto.xlsx');
+    } 
 }
