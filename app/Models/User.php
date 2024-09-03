@@ -64,4 +64,9 @@ class User extends Authenticatable implements MustVerifyEmail
     public function roles(){
         return $this->belongsToMany(Role::class)->withTimestamps();
     }
+
+    public function permisos(){
+        return $this->roles->map->permisos->flatten()->pluck("nombre")->unique();
+    }
+
 }

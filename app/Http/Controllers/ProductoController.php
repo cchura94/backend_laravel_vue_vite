@@ -6,6 +6,7 @@ use App\Exports\ProductoExport;
 use App\Models\Producto;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 use Maatwebsite\Excel\Facades\Excel;
 
 
@@ -16,6 +17,9 @@ class ProductoController extends Controller
      */
     public function index(Request $request)
     {
+        Gate::authorize(("index_producto"));
+        
+
         // /api/producto?page=2&limit=10&q=silla
         $limit = isset($request->limit)?$request->limit:10;
         if(isset($request->q)){
@@ -36,6 +40,8 @@ class ProductoController extends Controller
      */
     public function store(Request $request)
     {
+        Gate::authorize(("guardar_producto"));
+
         // validar
         $request->validate([
             "nombre" => "required|min:3|max:200",
@@ -65,6 +71,7 @@ class ProductoController extends Controller
      */
     public function show(string $id)
     {
+        Gate::authorize(("mostrar_producto"));
         $producto = Producto::findOrFail($id);
 
         return response()->json($producto, 200);
@@ -75,6 +82,7 @@ class ProductoController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        Gate::authorize(("modificar_producto"));
         DB::beginTransaction();
 
         try {
@@ -103,6 +111,8 @@ class ProductoController extends Controller
      */
     public function destroy(string $id)
     {
+        Gate::authorize(("eliminar_producto"));
+
         $producto = Producto::findOrFail($id);
 
         $producto->estado = false;

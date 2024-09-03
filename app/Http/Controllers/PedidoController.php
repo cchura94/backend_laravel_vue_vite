@@ -70,7 +70,8 @@ class PedidoController extends Controller
         $pedido = Pedido::with(['cliente', 'productos'])->find($id);
 
         $pdf = Pdf::loadView('pdf.recibo', ["pedido" => $pedido]);
-        return $pdf->download('recibo.pdf');
+        // return $pdf->download('recibo.pdf');
+        return $pdf->stream('recibo.pdf'); // download('recibo.pdf');
     }
 
     /**

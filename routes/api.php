@@ -12,6 +12,7 @@ use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\ResetPasswordController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UsuarioController;
+use App\Models\User;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -34,6 +35,11 @@ Route::post('change-password', [ResetPasswordController::class, "changePassword"
 Route::get('email/verify/{id}', [AuthController::class, 'verify'])->name('verification.verify');
 Route::get('email/resend', [AuthController::class, "resend"])->name("verification.resend")->middleware('auth:sanctum');
 
+// pruebas seeder
+Route::get("datos", function(){
+    $user = User::find(8);
+    return $user->permisos;
+});
 
 Route::middleware('auth:sanctum')->group(function(){
     
