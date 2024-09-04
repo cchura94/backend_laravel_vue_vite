@@ -41,6 +41,8 @@ Route::get("datos", function(){
     return $user->permisos;
 });
 
+Route::get("valor-siguiente", [PersonaController::class, "guardarValorSiguiente"]);
+
 Route::middleware('auth:sanctum')->group(function(){
     
     Route::get("producto/excel", [ProductoController::class, "exportarExcel"]);
